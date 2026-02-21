@@ -47,7 +47,7 @@ def work():
     except:
         data={}
     card = Card()
-    card_data=card.sv()
+    card_data=card.sv(data)
     data[card_data["main"]] = { 
     "second" : card_data["second"],
     "third" : card_data["third"],
@@ -95,14 +95,14 @@ class Card(): #Свойства карточки
 
 
 
-    def __init__(self, main = "null", f2 = "null", f3 = "null", translation = "null"):
+    def __init__(self, main="null", f2 = "null", f3 = "null", translation = "null"):
         self.main = main
         self.f2 = f2
         self.f3 = f3 
         self.tr = translation
  
  
-    def sv(self):  #Функция установки значений для слов
+    def sv(self, dict, check="null"):  #Функция установки значений для слов
         while True:
             #////////////////////////////////
             print("Первая форма: ") 
@@ -110,6 +110,50 @@ class Card(): #Свойства карточки
             if inp == "Ошибка ввода!":                       #ПОЛУЧАЕМ ПЕРВУЮ ФОРМУ
                 print(inp)
                 continue
+            if dict:
+                if inp in dict.keys():
+                    replace = False
+                    while True:
+                        print("Такая карточка уже есть")
+                        print("1-Ввести заново, 2-заменить карточку")      #ПРОВЕРКА
+                        user_input = check_inp_for_numbers()                                              
+                        if user_input == "Можно вводить только цифры":
+                            print(user_input)
+                            continue
+                        if len(user_input)>1:
+                            print("ОШИБКА! Слишком большой ввод")
+                        if len(user_input)<1:
+                            print("ОШИБКА! Ожидается ввод")                   #В ПЛАНАХ добавить вторую карточку с таким названием 
+                            continue
+                        # good_chars= "12"
+                        # for char in user_input:
+                        #     if char not in good_chars:
+                        #         print("ОШИБКА! Введите 1 или 2")
+                        #         print("1-Ввести заново, 2-заменить карточку")
+                        #         continue
+                        if user_input == "1":
+                            break
+                        if user_input == "2":
+                            replace = True
+                            break
+                    if replace == True:
+                        self.main = inp
+                        break
+                    else:
+                        continue
+                            
+                            
+                        
+                            
+                                
+                        
+                    
+                    
+                        
+                            
+                    
+                    
+                
             self.main = inp
             break
             #////////////////////////////////
@@ -189,19 +233,19 @@ def check_inp_for_words():    # проверка ввода
 
 
 
-def check_inp_for_work():
-    good_chars = "123"
+def check_inp_for_numbers():
+    good_chars = "0123456789"
     user_input = input().strip()
     for char in user_input:       
         if char not in good_chars:
-            user_input = "Можно вводить только: '1,2,3'"
-            return False
-        if len(user_input) > 1:
-            user_input = "Выбирать можно только одно"
-            return False
-        if len(user_input) < 1:
-            user_input = "Поле должно быть заполненно"
-            return False
+            user_input = "ОШИБКА! Можно вводить только цифры"
+            return user_input
+        # if len(user_input) > 1:
+        #     user_input = "Выбирать можно только одно"
+        #     return False
+        # if len(user_input) < 1:
+        #     user_input = "Поле должно быть заполненно"
+        #     return False
         else:
             continue
     return user_input 
