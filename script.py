@@ -22,11 +22,11 @@ def loading():
 
 
 # def work():
-#     try:
-#         with open("data.json", "r", encoding="utf-8") as file:
-#             data=j.load(file)
-#     except:
-#         data={}
+#     # try:
+#     #     with open("data.json", "r", encoding="utf-8") as file:
+#     #         data=j.load(file)
+#     # except:
+#     #     data={}
 #     card = Card()
 #     card_data=card.sv(data)
 #     data[card_data["main"]] = { 
@@ -63,56 +63,76 @@ class Card(): #Свойства карточки
 
 
 
-    def __init__(self, main="null", f2 = "null", f3 = "null", translation = "null", duplicate = False):
-        self.main = main
-        self.f2 = f2
-        self.f3 = f3 
-        self.tr = translation
+    def __init__(self, title="null", description = "null", description2 = "null", description3 = "null", duplicate = False):
+        self.title = title
+        self.d = description  
+        self.d2 = description2
+        self.d3 = description3
         self.dup = duplicate
+        
+    def create_dict (self):
+        
+        return {
+                
+        "title" : self.title, 
+        "description" : self.d,             #значения превращаются в словарь
+        "description2" : self.d2,
+        "description3" : self.d3,
+        "dup": self.dup
+            
+      } 
+            
+#             } 
+            
+#             
+        
+        
+        
  
  
-#     def sv(self, dict, check="null"):  #Функция установки значений для слов
-#         while True:
-#             #////////////////////////////////
-#             print("Первая форма: ") 
-#             inp = check_inp_for_words().capitalize()
-#             if inp == "Ошибка ввода!":                       #ПОЛУЧАЕМ ПЕРВУЮ ФОРМУ
-#                 print(inp)
-#                 continue
-#             if dict:
-#                 if inp in dict.keys():
-#                     replace = False
-#                     while True:
-#                         print("Такая карточка уже есть")
-#                         print("1-Ввести заново, 2-заменить карточку")      #ПРОВЕРКА
-#                         user_input = check_inp_for_numbers()                                              
-#                         if user_input == "Можно вводить только цифры":
-#                             print(user_input)
-#                             continue
-#                         if len(user_input)>1:
-#                             print("ОШИБКА! Слишком большой ввод")
-#                         if len(user_input)<1:
-#                             print("ОШИБКА! Ожидается ввод")                   #В ПЛАНАХ добавить вторую карточку с таким названием 
-#                             continue
-#                         # good_chars= "12"
-#                         # for char in user_input:
-#                         #     if char not in good_chars:
-#                         #         print("ОШИБКА! Введите 1 или 2")
-#                         #         print("1-Ввести заново, 2-заменить карточку")
-#                         #         continue
-#                         if user_input == "1":
-#                             break
-#                         if user_input == "2":
-#                             replace = True
-#                             break
-#                         else:
-#                             print("ОШИБКА! Неверное значение")
-#                             continue
-#                     if replace == True:
-#                         self.main = inp
-#                         break
-#                     else:
-#                         continue
+    # def sv(self, dict, check="null"):  #Функция установки значений для слов
+    #     while True:
+    #         #////////////////////////////////
+    #         print("Первая форма: ") 
+    #         inp = check_inp_for_words().capitalize()
+    #         if inp == "Ошибка ввода!":                       #ПОЛУЧАЕМ ПЕРВУЮ ФОРМУ
+    #             print(inp)
+    #             continue
+    #         if dict:
+    #             if inp in dict.keys():
+    #                 replace = False
+    #                 while True:
+    #                     print("Такая карточка уже есть")
+    #                     print("1-Ввести заново, 2-заменить карточку")      #ПРОВЕРКА
+    #                     user_input = check_inp_for_numbers()                                              
+    #                     if user_input == "Можно вводить только цифры":
+    #                         print(user_input)
+    #                         continue
+    #                     if len(user_input)>1:
+    #                         print("ОШИБКА! Слишком большой ввод")
+    #                     if len(user_input)<1:
+    #                         print("ОШИБКА! Ожидается ввод")                   #В ПЛАНАХ добавить вторую карточку с таким названием 
+    #                         continue
+    #                     # good_chars= "12"
+    #                     # for char in user_input:
+    #                     #     if char not in good_chars:
+    #                     #         print("ОШИБКА! Введите 1 или 2")
+    #                     #         print("1-Ввести заново, 2-заменить карточку")
+    #                     #         continue
+    #                     if user_input == "1":
+    #                         break
+    #                     if user_input == "2":
+    #                         replace = True
+    #                         break
+    #                     else:
+    #                         print("ОШИБКА! Неверное значение")
+    #                         continue
+    #                 if replace == True:
+    #                     self.main = inp
+    #                     break
+    #                 else:
+    #                     continue
+
                             
                             
                         
@@ -283,12 +303,63 @@ def main(page : ft.Page):
         
         
         def add_card():
-            pass
+            page.clean()
+            nonlocal title, main_desc
+            # # data[title.value] = main_desc.value
+            # # print(data)
+
+            # card = Card()
+            # card.main = title.value
+            # card.d2 = main_desc.value
+            # data.update(card.create_dict())
+            # print(data)
+            # try:
+            #     with open("data.json", "r", encoding="utf-8") as file:
+            #         data=j.load(file)
+            # except:
+            #     data={}
+            card = Card()
+            card.title = title.value
+            if card.title in data.keys() and duplicate == False:
+                del data[card.title]
+            if duplicate == True:
+                pass                                                #СДЕЛАТЬ ЧТО БУДЕТ ПРИ ДУБЛИКАТЕ  
+            card.d = main_desc.value
+            card_data=card.create_dict()
+            id = len(data.keys()) + 1 
+            # data[(card_data["title"]).capitalize()] = { #ВОЗРАЩАЕТ NULL ИБО УЖЕ ЕСТЬ, нужно что-то делать
+            # "d" : card_data["description"],
+            # "d2" : card_data["description2"],
+            # "d3" : card_data["description3"],
+            # "dup" : card_data["dup"],
+            # "id" : id
+            #                         }   
+            data[id] = {
+                "dup" : card_data["dup"],
+                "title" : (card_data["title"]).capitalize(),
+                "d" : card_data["description"],
+                "d2" : card_data["description2"],
+                "d3" : card_data["description3"]
+                
+                
+                
+                
+                
+                
+            }
+            print(data)
+            with open("data.json", "w", encoding="utf-8") as file:
+                    j.dump(data, file, ensure_ascii=False, indent=4)
+            
+            
+            
+            
         
         # ((((((((((((((((((((((((((((((((((((((((((((((((((((( ФУНКЦИЯ ВЫВОДА КНОПКИ ))))))))))))))))))))))))))))))))))))))))))))))))))))))
         def add_card_button():
             nonlocal title, duplicate_error_text
-            if title.value and len(title.value) > 1 and duplicate_error_text.value == "" : #ВОТ ТУТ ДОБАВИТЬ ПРОВЕРКУ НА ТЕКСТ О СУЩЕСТВУЮЩЕЙ КАРТОЧКЕ
+            # if title.value and len(title.value) > 1 and duplicate_error_text.value == "" : #ВОТ ТУТ ДОБАВИТЬ ПРОВЕРКУ НА ТЕКСТ О СУЩЕСТВУЮЩЕЙ КАРТОЧКЕ
+            if title.value and len(title.value) > 1:
                 add_card_btn.visible = True
             else:
                 add_card_btn.visible = False
